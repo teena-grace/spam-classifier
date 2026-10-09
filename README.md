@@ -1,64 +1,42 @@
-# 📧 Email Spam Classifier
+# Mailguard — Email Spam Classifier
 
-A Machine Learning project that classifies emails/SMS as **Spam** or **Not Spam** using Naive Bayes algorithm.
+A glassmorphism web interface for the existing Scikit-learn email classifier. Paste an email to get a spam likelihood, confidence score, and a short safety explanation. Analysis runs locally through Flask; the browser keeps recent results in session storage.
 
-## 🛠 Tools & Technologies
-- Python 3.11
-- Scikit-learn
-- Pandas
-- NumPy
+## Run locally
 
-## 📁 Project Structure
-```
-spam-classifier/
-├── data/                  # Dataset folder
-├── download_data.py       # Downloads the dataset
-├── explore.py             # Exploratory data analysis
-├── train_model.py         # Trains and saves the model
-├── predict.py             # Loads model and predicts
-└── README.md
-```
+Python 3.10 or newer is recommended.
 
-## 🚀 How to Run
-
-### 1. Clone the repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/spam-classifier.git
-cd spam-classifier
+python -m venv .venv
 ```
 
-### 2. Create virtual environment
+Activate the environment, then install dependencies and start the app:
+
 ```bash
-py -3.11 -m venv venv
-venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
 ```
 
-### 3. Install dependencies
-```bash
-pip install scikit-learn pandas numpy==1.26.4 scipy==1.11.4 scikit-learn==1.3.2
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000).
+
+The app loads `model.pkl` and `features.pkl` from the project root. If those files are missing, run `python train_model.py` first. The training script currently uses `data/emails.csv/emails.csv`.
+
+## Project structure
+
+```text
+app.py                 Flask web app and prediction API
+templates/index.html   Website interface
+static/style.css       Orange and white glass UI
+static/app.js          Input, result, examples, and session history
+train_model.py         Train the Multinomial Naive Bayes model
+predict.py             Command-line prediction examples
+model.pkl              Trained model
+features.pkl           Model vocabulary
+data/                  Training datasets
 ```
 
-### 4. Download dataset
-```bash
-python download_data.py
-```
+## Notes
 
-### 5. Train the model
-```bash
-python train_model.py
-```
-
-### 6. Run predictions
-```bash
-python predict.py
-```
-
-## 📊 Model Performance
-- Algorithm: Multinomial Naive Bayes
-- Accuracy: ~98%
-- Dataset: UCI SMS Spam Collection (5,574 messages)
-
-## 🧠 Algorithm Flow
-```
-Email Text → Preprocess → CountVectorizer → Naive Bayes → Spam / Not Spam
-```
+- The model was trained on a word-count email dataset and uses its learned vocabulary for classification.
+- A “likely safe” result is a model prediction, not a guarantee. Treat unexpected links and requests carefully.
+- Recent analysis history stays in the current browser session and clears when that session ends (or when you clear it).
